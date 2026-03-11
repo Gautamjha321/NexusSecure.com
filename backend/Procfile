@@ -1,1 +1,1 @@
-web: gunicorn scanner.wsgi
+web: gunicorn scanner.wsgi:application
