@@ -69,22 +69,22 @@ export default function ApiConsolePage() {
     : `curl -X ${ep.method} "${BASE_URL}/${ep.path}"`;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col lg:flex-row">
       <Sidebar />
-      <main className="flex-1 overflow-x-hidden">
-        <header className="bg-white border-b border-zinc-200 px-8 py-5 sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
+      <main className="flex-1 overflow-x-hidden min-w-0">
+        <header className="bg-white border-b border-zinc-200 px-4 sm:px-6 md:px-8 py-4 md:py-5 sticky top-0 z-30">
+          <div className="max-w-6xl mx-auto flex justify-between items-center gap-3">
             <div>
-              <h1 className="text-lg font-semibold text-zinc-900">API Console</h1>
-              <p className="text-xs text-zinc-500 mt-0.5">Interactive reference for the NexusOS scanner API</p>
+              <h1 className="text-base sm:text-lg font-semibold text-zinc-900">API Console</h1>
+              <p className="text-xs text-zinc-500 mt-0.5 hidden sm:block">Interactive reference for the NexusOS scanner API</p>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 rounded-lg text-xs font-mono text-zinc-500">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-zinc-100 rounded-lg text-xs font-mono text-zinc-500 truncate max-w-[200px] md:max-w-none">
               <Globe size={12} /> {BASE_URL}
             </div>
           </div>
         </header>
 
-        <div className="max-w-6xl mx-auto px-8 py-8 space-y-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 space-y-6 md:space-y-8">
 
           {/* Info Banner */}
           <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm p-5 flex items-start gap-4">

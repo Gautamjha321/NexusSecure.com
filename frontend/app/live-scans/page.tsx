@@ -53,31 +53,32 @@ export default function LiveScansPage() {
   const finished = scans.filter(s => s.status === "completed" || s.status === "failed");
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col lg:flex-row">
       <Sidebar />
-      <main className="flex-1 overflow-x-hidden">
+      <main className="flex-1 overflow-x-hidden min-w-0">
 
         {/* Header */}
-        <header className="bg-white border-b border-zinc-200 px-8 py-5 sticky top-0 z-30">
-          <div className="max-w-5xl mx-auto flex justify-between items-center">
+        <header className="bg-white border-b border-zinc-200 px-4 sm:px-6 md:px-8 py-4 md:py-5 sticky top-0 z-30">
+          <div className="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div>
-              <h1 className="text-lg font-semibold text-zinc-900">Live Scans</h1>
-              <p className="text-xs text-zinc-500 mt-0.5">Monitor active and recently completed scans in real-time</p>
+              <h1 className="text-base sm:text-lg font-semibold text-zinc-900">Live Scans</h1>
+              <p className="text-xs text-zinc-500 mt-0.5 hidden sm:block">Monitor active and recently completed scans in real-time</p>
             </div>
             <div className="flex items-center gap-2 text-xs font-medium text-zinc-500">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live — refreshing every 3s
+              <span className="hidden sm:inline">Live — refreshing every 3s</span>
+              <span className="sm:hidden">Live</span>
             </div>
           </div>
         </header>
 
-        <div className="max-w-5xl mx-auto px-8 py-8 space-y-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 space-y-6 md:space-y-8">
 
           {/* Launch New Scan */}
           <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6">
             <h2 className="text-sm font-semibold text-zinc-900 mb-1">Launch New Scan</h2>
             <p className="text-xs text-zinc-500 mb-4">Enter a target URL to start a new vulnerability scan immediately.</p>
-            <form onSubmit={handleLaunch} className="flex gap-3">
+            <form onSubmit={handleLaunch} className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <Globe className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 h-4 w-4" />
                 <input
@@ -158,14 +159,15 @@ export default function LiveScansPage() {
               </div>
             ) : (
               <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
-                <table className="w-full text-left">
+                <div className="overflow-x-auto">
+                <table className="w-full text-left min-w-[500px]">
                   <thead>
                     <tr className="bg-zinc-50 border-b border-zinc-200 text-xs font-semibold text-zinc-500 uppercase tracking-wide">
-                      <th className="px-6 py-3.5">Target</th>
-                      <th className="px-6 py-3.5">Status</th>
-                      <th className="px-6 py-3.5">Issues</th>
-                      <th className="px-6 py-3.5">Date</th>
-                      <th className="px-6 py-3.5 text-right">Action</th>
+                      <th className="px-4 sm:px-6 py-3.5">Target</th>
+                      <th className="px-4 sm:px-6 py-3.5">Status</th>
+                      <th className="px-4 sm:px-6 py-3.5 hidden sm:table-cell">Issues</th>
+                      <th className="px-4 sm:px-6 py-3.5 hidden md:table-cell">Date</th>
+                      <th className="px-4 sm:px-6 py-3.5 text-right">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100">
@@ -173,14 +175,14 @@ export default function LiveScansPage() {
                       const cfg = statusConfig[scan.status] || statusConfig.completed;
                       return (
                         <tr key={scan.id} className="hover:bg-zinc-50/50 transition-colors group">
-                          <td className="px-6 py-4 text-sm font-medium text-zinc-900 max-w-[220px] truncate">{scan.target_url}</td>
-                          <td className="px-6 py-4">
+                          <td className="px-4 sm:px-6 py-4 text-sm font-medium text-zinc-900 max-w-[130px] sm:max-w-[220px] truncate">{scan.target_url}</td>
+                          <td className="px-4 sm:px-6 py-4">
                             <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${cfg.bg} ${cfg.color}`}>{cfg.label}</span>
                           </td>
-                          <td className="px-6 py-4 text-sm font-medium text-zinc-700">{scan.vulnerability_count ?? 0} issues</td>
-                          <td className="px-6 py-4 text-xs text-zinc-500">{new Date(scan.created_at).toLocaleString()}</td>
-                          <td className="px-6 py-4 text-right">
-                            <Link href={`/scan/${scan.id}`} className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition-colors opacity-0 group-hover:opacity-100">
+                          <td className="px-4 sm:px-6 py-4 text-sm font-medium text-zinc-700 hidden sm:table-cell">{scan.vulnerability_count ?? 0} issues</td>
+                          <td className="px-4 sm:px-6 py-4 text-xs text-zinc-500 hidden md:table-cell">{new Date(scan.created_at).toLocaleString()}</td>
+                          <td className="px-4 sm:px-6 py-4 text-right">
+                            <Link href={`/scan/${scan.id}`} className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition-colors opacity-100 sm:opacity-0 group-hover:opacity-100">
                               View <ChevronRight size={13} />
                             </Link>
                           </td>
@@ -189,6 +191,7 @@ export default function LiveScansPage() {
                     })}
                   </tbody>
                 </table>
+                </div>
               </div>
             )}
           </section>

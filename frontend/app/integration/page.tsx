@@ -67,14 +67,14 @@ export default function IntegrationPage() {
   const [activeTab, setActiveTab] = useState("integrations");
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col lg:flex-row">
       <Sidebar />
-      <main className="flex-1 overflow-x-hidden">
-        <header className="bg-white border-b border-zinc-200 px-8 py-5 sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
+      <main className="flex-1 overflow-x-hidden min-w-0">
+        <header className="bg-white border-b border-zinc-200 px-4 sm:px-6 md:px-8 py-4 md:py-5 sticky top-0 z-30">
+          <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div>
-              <h1 className="text-lg font-semibold text-zinc-900">Integrations</h1>
-              <p className="text-xs text-zinc-500 mt-0.5">Connect NexusOS to your existing tools and workflows</p>
+              <h1 className="text-base sm:text-lg font-semibold text-zinc-900">Integrations</h1>
+              <p className="text-xs text-zinc-500 mt-0.5 hidden sm:block">Connect NexusOS to your existing tools and workflows</p>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 rounded-lg text-xs font-semibold text-zinc-500">
               <CheckCircle2 size={12} className="text-emerald-500" /> API Active
@@ -82,10 +82,11 @@ export default function IntegrationPage() {
           </div>
         </header>
 
-        <div className="max-w-6xl mx-auto px-8 py-8 space-y-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 space-y-6 md:space-y-8">
 
           {/* Tabs */}
-          <div className="flex bg-white p-1 rounded-xl border border-zinc-200 w-fit shadow-sm">
+          <div className="overflow-x-auto pb-1">
+          <div className="flex bg-white p-1 rounded-xl border border-zinc-200 w-fit shadow-sm min-w-max">
             {["integrations", "webhooks", "sdk"].map(tab => (
               <button
                 key={tab}
@@ -97,6 +98,7 @@ export default function IntegrationPage() {
                 {tab}
               </button>
             ))}
+          </div>
           </div>
 
           {/* ── INTEGRATIONS TAB ── */}

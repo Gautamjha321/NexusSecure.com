@@ -14,12 +14,15 @@ import {
   Globe, 
   ArrowRight,
   ShieldAlert,
-  FileText
+  FileText,
+  Menu,
+  X,
 } from "lucide-react";
 
 export default function Home() {
   const [scanUrl, setScanUrl] = useState("");
   const [isStartingScan, setIsStartingScan] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
 
   const handleScanSubmit = async (e: React.FormEvent) => {
@@ -41,28 +44,51 @@ export default function Home() {
     <main className="min-h-screen bg-white text-slate-900 font-sans">
       
       {/* --- Navbar --- */}
-      <nav className="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
-        <div className="flex items-center gap-2">
-          <div className="bg-indigo-600 p-2 rounded-lg">
-            <ShieldCheck className="text-white w-6 h-6" />
+      <nav className="relative px-4 sm:px-8 py-5 max-w-7xl mx-auto">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="bg-indigo-600 p-2 rounded-lg">
+              <ShieldCheck className="text-white w-5 h-5 sm:w-6 sm:h-6" />
+            </div>
+            <span className="text-xl sm:text-2xl font-extrabold tracking-tight">Nexus<span className="text-indigo-600">Secure</span></span>
           </div>
-          <span className="text-2xl font-extrabold tracking-tight">Nexus<span className="text-indigo-600">Secure</span></span>
-        </div>
-        
-        <div className="hidden md:flex items-center gap-8 font-medium text-slate-600">
-          <a href="#features" className="hover:text-indigo-600 transition">Features</a>
-          <a href="#" className="hover:text-indigo-600 transition">Vulnerability DB</a>
-          <a href="#" className="hover:text-indigo-600 transition">Pricing</a>
+          
+          {/* Desktop nav links */}
+          <div className="hidden md:flex items-center gap-8 font-medium text-slate-600">
+            <a href="#features" className="hover:text-indigo-600 transition">Features</a>
+            <a href="#" className="hover:text-indigo-600 transition">Vulnerability DB</a>
+            <a href="#" className="hover:text-indigo-600 transition">Pricing</a>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Link href="/login" className="hidden sm:inline px-5 py-2 text-slate-600 hover:text-indigo-600 font-semibold transition">
+              Login
+            </Link>
+            <Link href="/signup" className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-bold text-sm sm:text-base shadow-lg shadow-indigo-200 transition">
+              Get Started
+            </Link>
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Link href="/login" className="px-5 py-2 text-slate-600 hover:text-indigo-600 font-semibold transition">
-            Login
-          </Link>
-          <Link href="/signup" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-indigo-200 transition">
-            Get Started
-          </Link>
-        </div>
+        {/* Mobile dropdown menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute left-0 right-0 top-full mt-1 mx-4 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-4 space-y-1">
+            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors">Features</a>
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors">Vulnerability DB</a>
+            <a href="#" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors">Pricing</a>
+            <div className="border-t border-slate-100 pt-2 mt-2">
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-xl transition-colors">Login</Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* --- Hero Section & URL Scanner --- */}
@@ -80,8 +106,8 @@ export default function Home() {
             New: AI-Powered Zero Day Detection
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 leading-tight tracking-tight">
-            Secure Your Web Apps <br />
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 leading-tight tracking-tight">
+            Secure Your Web Apps <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_auto] animate-gradient">
               Before Hackers Do.
             </span>
@@ -203,7 +229,7 @@ export default function Home() {
 
       {/* --- CTA Section --- */}
       <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto bg-indigo-900 rounded-3xl p-12 relative overflow-hidden text-center md:text-left">
+        <div className="max-w-5xl mx-auto bg-indigo-900 rounded-3xl p-6 sm:p-8 md:p-12 relative overflow-hidden text-center md:text-left">
           <div className="absolute top-0 right-0 p-10 opacity-10">
             <ShieldCheck size={300} className="text-white" />
           </div>

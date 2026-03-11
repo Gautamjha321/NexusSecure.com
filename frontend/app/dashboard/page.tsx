@@ -139,53 +139,66 @@ function DashboardContent() {
   );
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col lg:flex-row">
       
       <Sidebar />
 
       {/* --- 2. MAIN CONTENT AREA --- */}
-      <main className="flex-1 overflow-x-hidden">
+      <main className="flex-1 overflow-x-hidden min-w-0">
         
         {/* Top Navbar */}
-        <header className="bg-white border-b border-zinc-200 px-8 py-4 sticky top-0 z-30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="flex items-center gap-4">
-            <h2 className="text-lg font-semibold text-zinc-900 tracking-tight">Overview</h2>
-            <div className="hidden md:block h-5 w-[1px] bg-zinc-200 mx-1"></div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="text-xs font-medium text-zinc-500">System Operational</span>
+        <header className="bg-white border-b border-zinc-200 px-4 sm:px-6 md:px-8 py-3 md:py-4 sticky top-0 z-30">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div className="flex items-center gap-3">
+              <h2 className="text-base sm:text-lg font-semibold text-zinc-900 tracking-tight">Overview</h2>
+              <div className="hidden md:block h-5 w-[1px] bg-zinc-200 mx-1"></div>
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="text-xs font-medium text-zinc-500">System Operational</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="relative flex-1 sm:flex-none">
+                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+                 <input 
+                   value={searchQuery}
+                   onChange={(e) => setSearchQuery(e.target.value)}
+                   placeholder="Search Scans..." 
+                   className="w-full sm:w-48 md:w-64 pl-9 pr-4 py-2 bg-zinc-100 border border-transparent rounded-lg text-sm transition-colors focus:bg-white focus:border-zinc-300 focus:ring-4 focus:ring-zinc-100 outline-none placeholder:text-zinc-500"
+                 />
+              </div>
+              <form onSubmit={handleQuickScan} className="flex items-center gap-2">
+                <input 
+                  type="url"
+                  value={scanUrl}
+                  onChange={(e) => setScanUrl(e.target.value)}
+                  placeholder="https://example.com" 
+                  className="hidden lg:block px-4 py-2 bg-white border border-zinc-200 rounded-lg text-sm w-52 xl:w-64 focus:border-zinc-300 focus:ring-4 focus:ring-zinc-100 shadow-sm outline-none transition-all placeholder:text-zinc-400"
+                  required
+                />
+                <button 
+                  type="submit" 
+                  disabled={isScanning}
+                  className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-zinc-900 text-white rounded-lg shadow-sm hover:bg-zinc-800 transition-colors disabled:opacity-75 text-sm font-medium whitespace-nowrap active:scale-95"
+                >
+                   {isScanning ? <Loader2 size={16} className="animate-spin" /> : <Zap size={16} />}
+                   <span className="hidden sm:inline">Quick Scan</span>
+                   <span className="sm:hidden">Scan</span>
+                </button>
+              </form>
             </div>
           </div>
-          
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="relative group flex-1 md:flex-none">
-               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
-               <input 
-                 value={searchQuery}
-                 onChange={(e) => setSearchQuery(e.target.value)}
-                 placeholder="Search Scans..." 
-                 className="w-full md:w-64 pl-9 pr-4 py-2 bg-zinc-100 border border-transparent rounded-lg text-sm transition-colors focus:bg-white focus:border-zinc-300 focus:ring-4 focus:ring-zinc-100 outline-none placeholder:text-zinc-500"
-               />
-            </div>
-            <form onSubmit={handleQuickScan} className="flex items-center gap-2 flex-1 md:flex-none">
-              <input 
-                type="url"
-                value={scanUrl}
-                onChange={(e) => setScanUrl(e.target.value)}
-                placeholder="https://example.com" 
-                className="hidden md:block px-4 py-2 bg-white border border-zinc-200 rounded-lg text-sm w-64 focus:border-zinc-300 focus:ring-4 focus:ring-zinc-100 shadow-sm outline-none transition-all placeholder:text-zinc-400"
-                required
-              />
-              <button 
-                type="submit" 
-                disabled={isScanning}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg shadow-sm hover:bg-zinc-800 transition-colors disabled:opacity-75 text-sm font-medium whitespace-nowrap active:scale-95 w-full md:w-auto"
-              >
-                 {isScanning ? <Loader2 size={16} className="animate-spin" /> : <Zap size={16} />}
-                 Quick Scan
-              </button>
-            </form>
-          </div>
+          {/* Mobile scan url input */}
+          <form onSubmit={handleQuickScan} className="mt-2 lg:hidden flex gap-2">
+            <input 
+              type="url"
+              value={scanUrl}
+              onChange={(e) => setScanUrl(e.target.value)}
+              placeholder="Scan a URL: https://example.com" 
+              className="flex-1 px-3 py-2 bg-zinc-100 border border-transparent rounded-lg text-sm focus:bg-white focus:border-zinc-300 focus:ring-4 focus:ring-zinc-100 outline-none placeholder:text-zinc-400"
+            />
+          </form>
         </header>
 
         {scanError && (
@@ -196,7 +209,7 @@ function DashboardContent() {
           </div>
         )}
 
-        <div className="p-8 space-y-8 max-w-7xl mx-auto">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 max-w-7xl mx-auto">
           
           {/* Dashboard Stats Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -317,47 +330,78 @@ function DashboardContent() {
             </div>
 
             <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
+              {/* Mobile card view */}
+              <div className="sm:hidden divide-y divide-zinc-100">
+                {filteredScans.map((scan) => (
+                  <div key={scan.id} className="p-4 space-y-2">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-white border border-zinc-200 p-1.5 rounded-lg text-zinc-400 shadow-sm shrink-0 mt-0.5">
+                        <Globe size={14}/>
+                      </div>
+                      <p className="text-sm font-semibold text-zinc-900 break-all">{scan.target_url}</p>
+                    </div>
+                    <div className="flex items-center justify-between pl-8">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-0.5 rounded-md text-xs font-medium border ${
+                          scan.status === 'completed' ? 'bg-emerald-50 text-emerald-700 border-emerald-100/50' 
+                          : scan.status === 'failed' ? 'bg-red-50 text-red-700 border-red-100/50'
+                          : 'bg-amber-50 text-amber-700 border-amber-100/50 animate-pulse'
+                        }`}>{scan.status.charAt(0).toUpperCase() + scan.status.slice(1)}</span>
+                        <span className="text-xs text-zinc-500">{scan.vulnerability_count} issues</span>
+                      </div>
+                      <div className="flex gap-1">
+                        <Link href={`/scan/${scan.id}`} className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors"><Eye size={15}/></Link>
+                        <button onClick={() => deleteScanApi(scan.id)} className="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={15}/></button>
+                      </div>
+                    </div>
+                    <p className="text-xs text-zinc-400 pl-8">{new Date(scan.created_at).toLocaleString()}</p>
+                  </div>
+                ))}
+                {filteredScans.length === 0 && (
+                  <p className="px-4 py-10 text-center text-zinc-500 text-sm">No scans found matching criteria.</p>
+                )}
+              </div>
+              {/* Desktop table view */}
+              <div className="hidden sm:block overflow-x-auto">
                <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-zinc-50/50 border-b border-zinc-200 text-xs font-semibold text-zinc-500 tracking-wide">
-                      <th className="px-6 py-4">Target URL</th>
-                      <th className="px-6 py-4 font-normal text-zinc-500">Status</th>
-                      <th className="px-6 py-4 font-normal text-zinc-500">Vulnerabilities</th>
-                      <th className="px-6 py-4 text-right font-normal text-zinc-500">Actions</th>
+                      <th className="px-4 md:px-6 py-4">Target URL</th>
+                      <th className="px-4 md:px-6 py-4 font-normal text-zinc-500">Status</th>
+                      <th className="px-4 md:px-6 py-4 font-normal text-zinc-500 hidden md:table-cell">Vulnerabilities</th>
+                      <th className="px-4 md:px-6 py-4 text-right font-normal text-zinc-500">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100">
                     {filteredScans.map((scan) => (
                       <tr key={scan.id} className="group hover:bg-zinc-50/50 transition-colors">
-                        <td className="px-6 py-4">
+                        <td className="px-4 md:px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="bg-white border border-zinc-200 p-2 rounded-lg text-zinc-400 shadow-sm">
+                            <div className="bg-white border border-zinc-200 p-2 rounded-lg text-zinc-400 shadow-sm hidden sm:flex">
                               <Globe size={16}/>
                             </div>
-                            <div>
-                              <p className="text-sm font-semibold text-zinc-900">{scan.target_url}</p>
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold text-zinc-900 truncate max-w-[160px] md:max-w-xs lg:max-w-sm">{scan.target_url}</p>
                               <p className="text-xs text-zinc-500 mt-0.5">{new Date(scan.created_at).toLocaleString()}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 md:px-6 py-4">
                            <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${
-                             scan.status === 'completed' 
-                             ? 'bg-emerald-50 text-emerald-700 border-emerald-100/50' 
-                             : scan.status === 'failed'
-                             ? 'bg-red-50 text-red-700 border-red-100/50'
+                             scan.status === 'completed' ? 'bg-emerald-50 text-emerald-700 border-emerald-100/50' 
+                             : scan.status === 'failed' ? 'bg-red-50 text-red-700 border-red-100/50'
                              : 'bg-amber-50 text-amber-700 border-amber-100/50 animate-pulse'
                            }`}>
                              {scan.status.charAt(0).toUpperCase() + scan.status.slice(1)}
                            </span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 md:px-6 py-4 hidden md:table-cell">
                           <span className={`text-sm font-medium ${scan.vulnerability_count > 0 ? 'text-zinc-900' : 'text-zinc-500'}`}>
                              {scan.vulnerability_count} issues
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                           <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td className="px-4 md:px-6 py-4 text-right">
+                           <div className="flex justify-end gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                               <Link href={`/scan/${scan.id}`} className="p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors">
                                 <Eye size={16}/>
                               </Link>
@@ -377,6 +421,7 @@ function DashboardContent() {
                     )}
                   </tbody>
                </table>
+              </div>
             </div>
           </div>
 

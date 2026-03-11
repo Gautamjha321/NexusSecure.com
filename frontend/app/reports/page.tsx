@@ -63,29 +63,29 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col lg:flex-row">
       <Sidebar />
-      <main className="flex-1 overflow-x-hidden">
-        <header className="bg-white border-b border-zinc-200 px-8 py-5 sticky top-0 z-30">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
+      <main className="flex-1 overflow-x-hidden min-w-0">
+        <header className="bg-white border-b border-zinc-200 px-4 sm:px-6 md:px-8 py-4 md:py-5 sticky top-0 z-30">
+          <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3">
             <div>
-              <h1 className="text-lg font-semibold text-zinc-900">Reports</h1>
-              <p className="text-xs text-zinc-500 mt-0.5">Aggregate analysis across all your vulnerability scans</p>
+              <h1 className="text-base sm:text-lg font-semibold text-zinc-900">Reports</h1>
+              <p className="text-xs text-zinc-500 mt-0.5 hidden sm:block">Aggregate analysis across all your vulnerability scans</p>
             </div>
             <button
               onClick={handleExport}
               disabled={!scans.length}
-              className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-xl text-sm font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50 shadow-sm"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-zinc-900 text-white rounded-xl text-sm font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50 shadow-sm"
             >
               <Download size={14} /> Export CSV
             </button>
           </div>
         </header>
 
-        <div className="max-w-6xl mx-auto px-8 py-8 space-y-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 space-y-6 md:space-y-8">
 
           {/* Summary Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
               { label: "Total Scans", value: scans.length, icon: <Globe size={18} className="text-indigo-500" />, bg: "bg-indigo-50" },
               { label: "Issues Found", value: totalIssues, icon: <ShieldAlert size={18} className="text-red-500" />, bg: "bg-red-50" },
@@ -161,18 +161,19 @@ export default function ReportsPage() {
 
           {/* Scan Table */}
           <div className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
+            <div className="px-4 sm:px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
               <h2 className="text-sm font-semibold text-zinc-900">All Scan Reports</h2>
               <span className="text-xs text-zinc-500">{scans.length} total</span>
             </div>
-            <table className="w-full text-left">
+            <div className="overflow-x-auto">
+            <table className="w-full text-left min-w-[500px]">
               <thead>
                 <tr className="bg-zinc-50 border-b border-zinc-100 text-xs font-semibold text-zinc-500 uppercase tracking-wide">
-                  <th className="px-6 py-3.5">Target</th>
-                  <th className="px-6 py-3.5">Status</th>
-                  <th className="px-6 py-3.5">Issues</th>
-                  <th className="px-6 py-3.5">Date</th>
-                  <th className="px-6 py-3.5 text-right">Report</th>
+                  <th className="px-4 sm:px-6 py-3.5">Target</th>
+                  <th className="px-4 sm:px-6 py-3.5">Status</th>
+                  <th className="px-4 sm:px-6 py-3.5 hidden sm:table-cell">Issues</th>
+                  <th className="px-4 sm:px-6 py-3.5 hidden md:table-cell">Date</th>
+                  <th className="px-4 sm:px-6 py-3.5 text-right">Report</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
@@ -181,8 +182,8 @@ export default function ReportsPage() {
                 )}
                 {scans.map(scan => (
                   <tr key={scan.id} className="hover:bg-zinc-50/50 transition-colors group">
-                    <td className="px-6 py-4 text-sm font-medium text-zinc-900 max-w-[200px] truncate">{scan.target_url}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 sm:px-6 py-4 text-sm font-medium text-zinc-900 max-w-[130px] sm:max-w-[200px] truncate">{scan.target_url}</td>
+                    <td className="px-4 sm:px-6 py-4">
                       <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${
                         scan.status === "completed" ? "bg-emerald-50 text-emerald-700 border-emerald-100"
                         : scan.status === "failed" ? "bg-red-50 text-red-700 border-red-100"
@@ -191,17 +192,18 @@ export default function ReportsPage() {
                         {scan.status.charAt(0).toUpperCase() + scan.status.slice(1)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-700">{scan.vulnerability_count ?? 0} issues</td>
-                    <td className="px-6 py-4 text-xs text-zinc-500">{new Date(scan.created_at).toLocaleString()}</td>
-                    <td className="px-6 py-4 text-right">
-                      <Link href={`/scan/${scan.id}`} className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-500 transition-colors opacity-0 group-hover:opacity-100">
-                        <Eye size={13} /> View Report
+                    <td className="px-4 sm:px-6 py-4 text-sm text-zinc-700 hidden sm:table-cell">{scan.vulnerability_count ?? 0} issues</td>
+                    <td className="px-4 sm:px-6 py-4 text-xs text-zinc-500 hidden md:table-cell">{new Date(scan.created_at).toLocaleString()}</td>
+                    <td className="px-4 sm:px-6 py-4 text-right">
+                      <Link href={`/scan/${scan.id}`} className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-500 transition-colors opacity-100 sm:opacity-0 group-hover:opacity-100">
+                        <Eye size={13} /> View
                       </Link>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       </main>
