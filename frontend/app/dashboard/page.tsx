@@ -144,7 +144,7 @@ function DashboardContent() {
       <Sidebar />
 
       {/* --- 2. MAIN CONTENT AREA --- */}
-      <main className="flex-1 overflow-x-hidden min-w-0">
+      <main className="flex-1 flex flex-col overflow-x-hidden min-w-0 pb-6 sm:pb-8">
         
         {/* Top Navbar */}
         <header className="bg-white border-b border-zinc-200 px-4 sm:px-6 md:px-8 py-3 md:py-4 sticky top-0 z-30">
@@ -209,16 +209,16 @@ function DashboardContent() {
           </div>
         )}
 
-        <div className="p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 max-w-7xl mx-auto">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 max-w-7xl mx-auto w-full">
           
           {/* Dashboard Stats Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             <StatCard label="Critical Threats" value={totalBugs} trend="+12% from last week" color="text-zinc-900"/>
             <StatCard label="Assets Monitored" value={scanList.length} trend="All systems online" color="text-zinc-900"/>
             <StatCard label="Security Index" value={`${securityScore}%`} trend="Infrastructure Health" color="text-zinc-900"/>
             
             {/* Engine Load Stats */}
-            <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm flex flex-col justify-between">
+            <div className="bg-white p-4 sm:p-5 lg:p-6 rounded-2xl border border-zinc-200 shadow-sm flex flex-col justify-between mt-2 sm:mt-0">
                <div className="flex justify-between items-center text-xs font-semibold text-zinc-500 uppercase tracking-wide">
                  <span>Engine Load</span>
                </div>
@@ -236,11 +236,11 @@ function DashboardContent() {
           </div>
 
           {/* Charts & Feed Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-8">
             
             {/* Main History Chart */}
-            <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-zinc-200 shadow-sm">
-              <div className="flex justify-between items-start mb-6">
+            <div className="md:col-span-2 bg-white rounded-2xl p-4 sm:p-6 border border-zinc-200 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
                  <div>
                     <h3 className="text-base font-semibold text-zinc-900">Threat Analytics</h3>
                     <p className="text-sm text-zinc-500 mt-1">Incidents detected over time</p>
@@ -250,7 +250,7 @@ function DashboardContent() {
                     <button className="px-3 py-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 transition-colors">30D</button>
                  </div>
               </div>
-              <div className="h-[250px] w-full mt-4">
+              <div className="h-[220px] sm:h-[260px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={trendData}>
                     <defs>
@@ -270,7 +270,7 @@ function DashboardContent() {
             </div>
 
             {/* Live Activity Feed */}
-            <div className="bg-[#09090b] rounded-2xl p-6 text-zinc-300 font-mono text-xs shadow-sm relative overflow-hidden border border-zinc-800 flex flex-col">
+            <div className="bg-[#09090b] rounded-2xl p-4 sm:p-6 text-zinc-300 font-mono text-xs shadow-sm relative overflow-hidden border border-zinc-800 flex flex-col max-h-[320px] md:max-h-[360px]">
               <div className="flex items-center gap-3 mb-4 border-b border-zinc-800 pb-4">
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
@@ -308,14 +308,14 @@ function DashboardContent() {
           </div>
 
           {/* Detailed Audit Table */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-               <div className="flex bg-white p-1 rounded-lg border border-zinc-200">
+               <div className="flex flex-wrap bg-white p-1 rounded-lg border border-zinc-200 gap-1">
                   <TabButton label="All Scans" count={scanList.length} active={activeTab === 'all'} onClick={() => setActiveTab('all')} />
                   <TabButton label="Running" count={scanList.filter(s => s.status !== 'completed').length} active={activeTab === 'running'} onClick={() => setActiveTab('running')} />
                   <TabButton label="Completed" count={scanList.filter(s => s.status === 'completed').length} active={activeTab === 'completed'} onClick={() => setActiveTab('completed')} />
                </div>
-               <div className="flex items-center gap-2">
+               <div className="flex items-center gap-2 w-full sm:w-auto justify-start sm:justify-end">
                  <button 
                    onClick={handleExportHistory}
                    disabled={!filteredScans.length}
@@ -454,10 +454,10 @@ function SidebarItem({ icon, label, active = false }: any) {
 
 function StatCard({ label, value, trend, color }: any) {
   return (
-    <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white p-4 sm:p-5 lg:p-6 rounded-2xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
       <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">{label}</p>
-      <h4 className={`text-3xl font-bold tracking-tight mb-2 ${color}`}>{value}</h4>
-      <p className="text-xs font-medium text-zinc-400">{trend}</p>
+      <h4 className={`text-2xl sm:text-3xl font-bold tracking-tight mb-2 ${color}`}>{value}</h4>
+      <p className="text-xs sm:text-sm font-medium text-zinc-400">{trend}</p>
     </div>
   );
 }
