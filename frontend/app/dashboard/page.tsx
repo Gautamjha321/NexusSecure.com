@@ -307,8 +307,21 @@ function DashboardContent() {
             </div>
           </div>
 
-          {/* Detailed Audit Table */}
-          <div className="space-y-3 sm:space-y-4">
+          {/* Scan Results Section */}
+          <div className="space-y-3 sm:space-y-5">
+            {/* Section header */}
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+              <div>
+                <h2 className="text-base sm:text-lg font-semibold text-zinc-900 tracking-tight">
+                  Scan Results
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-500 mt-1">
+                  Review all completed and running vulnerability scan reports.
+                </p>
+              </div>
+            </div>
+
+            {/* Filters + actions */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                <div className="flex flex-wrap bg-white p-1 rounded-lg border border-zinc-200 gap-1">
                   <TabButton label="All Scans" count={scanList.length} active={activeTab === 'all'} onClick={() => setActiveTab('all')} />
@@ -347,7 +360,11 @@ function DashboardContent() {
                           : scan.status === 'failed' ? 'bg-red-50 text-red-700 border-red-100/50'
                           : 'bg-amber-50 text-amber-700 border-amber-100/50 animate-pulse'
                         }`}>{scan.status.charAt(0).toUpperCase() + scan.status.slice(1)}</span>
-                        <span className="text-xs text-zinc-500">{scan.vulnerability_count} issues</span>
+                        <span className={`text-xs font-medium ${
+                          (scan.vulnerability_count || 0) > 0 ? 'text-red-500' : 'text-zinc-500'
+                        }`}>
+                          {scan.vulnerability_count || 0} issues
+                        </span>
                       </div>
                       <div className="flex gap-1">
                         <Link href={`/scan/${scan.id}`} className="p-1.5 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors"><Eye size={15}/></Link>
@@ -396,8 +413,8 @@ function DashboardContent() {
                            </span>
                         </td>
                         <td className="px-4 md:px-6 py-4 hidden md:table-cell">
-                          <span className={`text-sm font-medium ${scan.vulnerability_count > 0 ? 'text-zinc-900' : 'text-zinc-500'}`}>
-                             {scan.vulnerability_count} issues
+                          <span className={`text-sm font-medium ${(scan.vulnerability_count || 0) > 0 ? 'text-red-500' : 'text-zinc-500'}`}>
+                             {scan.vulnerability_count || 0} issues
                           </span>
                         </td>
                         <td className="px-4 md:px-6 py-4 text-right">
