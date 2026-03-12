@@ -102,7 +102,7 @@ export default function Home() {
             <span className="text-lg font-extrabold tracking-tight">Nexus<span className="text-indigo-600">Secure</span></span>
           </div>
           <p className="text-slate-500 font-medium italic text-center md:text-left">
-            © 2026 NexusSecure. All rights reserved. Built for the modern web. Made by <span className="font-semibold not-italic">Gautam Jha</span>.
+            © 2026 NexusSecure. All rights reserved. Made by   <span className="font-semibold not-italic">Gautam Jha ❤</span>.
           </p>
           <div className="flex gap-6 text-slate-400 font-bold text-sm uppercase tracking-widest">
             <a href="#" className="hover:text-indigo-600 transition">Twitter</a>
