@@ -249,7 +249,7 @@ export default function Home() {
 
       {/* --- Footer --- */}
       <footer className="py-12 border-t border-slate-100 text-center text-slate-500 text-sm">
-        <p>© 2026 NexusSecure PenTesting Lab. All rights reserved.</p>
+        <p>© 2026 NexusSecure PenTesting Lab Made By Gautam Jha ❤. All rights reserved.</p>
       </footer>
     </main>
   );
