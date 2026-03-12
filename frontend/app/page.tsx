@@ -83,7 +83,7 @@ export default function Home() {
               </h2>
               <p className="text-indigo-200 text-xl font-medium">Join 10,000+ security researchers and developers today.</p>
             </div>
-            <motion.div whileHover={{ scale: 1.05 }} whileActive={{ scale: 0.95 }}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/signup" className="bg-white text-indigo-900 px-12 py-6 rounded-2xl font-black text-xl hover:shadow-[0_20px_50px_rgba(255,255,255,0.3)] transition-all flex items-center gap-3">
                 Start Free Trial <ArrowRight size={24} />
               </Link>
