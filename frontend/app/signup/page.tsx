@@ -46,8 +46,12 @@ export default function Signup() {
     }
     try {
       setLoading(true);
-      const { confirmPassword, ...registerData } = form;
-      await api.post("register/", registerData);
+      await api.post("register/", {
+        username: form.username,
+        email: form.email,
+        password: form.password,
+        password2: form.confirmPassword,
+      });
       setSuccess(true);
       setTimeout(() => router.push("/login"), 2000);
     } catch (err: any) {
